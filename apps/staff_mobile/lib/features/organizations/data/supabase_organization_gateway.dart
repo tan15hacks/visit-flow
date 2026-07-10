@@ -72,11 +72,7 @@ final class SupabaseOrganizationGateway implements OrganizationGateway {
     try {
       final Object? response = await _client.rpc(
         'create_organization',
-        params: {
-          'p_name': name,
-          'p_slug': slug,
-          'p_timezone': timezone,
-        },
+        params: {'p_name': name, 'p_slug': slug, 'p_timezone': timezone},
       );
       if (response is! String || response.isEmpty) {
         throw const OrganizationFailure(

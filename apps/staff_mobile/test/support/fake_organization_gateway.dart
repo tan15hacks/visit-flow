@@ -2,9 +2,8 @@ import 'package:visitflow_staff/features/organizations/domain/organization_gatew
 import 'package:visitflow_staff/features/organizations/domain/organization_membership.dart';
 
 final class FakeOrganizationGateway implements OrganizationGateway {
-  FakeOrganizationGateway({
-    List<OrganizationMembership> memberships = const [],
-  }) : _memberships = List.of(memberships);
+  FakeOrganizationGateway({List<OrganizationMembership> memberships = const []})
+    : _memberships = List.of(memberships);
 
   List<OrganizationMembership> _memberships;
 

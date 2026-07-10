@@ -105,9 +105,9 @@ final class _OrganizationOnboardingScreenState
           ],
           Text(
             'Create your organization',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
           Text(
@@ -171,9 +171,7 @@ final class _OrganizationOnboardingScreenState
           ),
           const SizedBox(height: 24),
           FilledButton.icon(
-            onPressed: controller.isCreating
-                ? null
-                : () => _submit(controller),
+            onPressed: controller.isCreating ? null : () => _submit(controller),
             icon: controller.isCreating
                 ? const SizedBox.square(
                     dimension: 18,
@@ -328,9 +326,9 @@ final class _FailurePanel extends StatelessWidget {
         Text(
           'We could not load your workspace',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
         Text(message, textAlign: TextAlign.center),
@@ -368,7 +366,10 @@ final class _MessageBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.error_outline_rounded, color: colorScheme.onErrorContainer),
+          Icon(
+            Icons.error_outline_rounded,
+            color: colorScheme.onErrorContainer,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(

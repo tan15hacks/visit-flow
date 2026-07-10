@@ -161,9 +161,7 @@ void main() {
       find.widgetWithText(TextFormField, 'Organization name'),
       'Acme Main Office',
     );
-    await tester.tap(
-      find.widgetWithText(FilledButton, 'Create organization'),
-    );
+    await tester.tap(find.widgetWithText(FilledButton, 'Create organization'));
     await tester.pumpAndSettle();
 
     expect(find.text('Acme Main Office'), findsWidgets);

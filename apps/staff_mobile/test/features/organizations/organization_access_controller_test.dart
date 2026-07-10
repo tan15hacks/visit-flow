@@ -32,35 +32,38 @@ void main() {
     expect(organizationGateway.loadCalls, 1);
   });
 
-  test('organization creation refreshes membership and opens workspace', () async {
-    final authGateway = FakeAuthGateway(
-      currentUser: const AuthUser(id: 'user-1', email: 'owner@example.com'),
-    );
-    final authController = AuthSessionController(gateway: authGateway);
-    final organizationGateway = FakeOrganizationGateway();
-    final controller = OrganizationAccessController(
-      gateway: organizationGateway,
-      authController: authController,
-    );
-    addTearDown(() async {
-      controller.dispose();
-      authController.dispose();
-      await authGateway.dispose();
-    });
+  test(
+    'organization creation refreshes membership and opens workspace',
+    () async {
+      final authGateway = FakeAuthGateway(
+        currentUser: const AuthUser(id: 'user-1', email: 'owner@example.com'),
+      );
+      final authController = AuthSessionController(gateway: authGateway);
+      final organizationGateway = FakeOrganizationGateway();
+      final controller = OrganizationAccessController(
+        gateway: organizationGateway,
+        authController: authController,
+      );
+      addTearDown(() async {
+        controller.dispose();
+        authController.dispose();
+        await authGateway.dispose();
+      });
 
-    await _settleController();
-    await controller.createOrganization(
-      name: 'Acme Office',
-      slug: 'acme-office',
-      timezone: 'Asia/Manila',
-    );
+      await _settleController();
+      await controller.createOrganization(
+        name: 'Acme Office',
+        slug: 'acme-office',
+        timezone: 'Asia/Manila',
+      );
 
-    expect(controller.status, OrganizationAccessStatus.ready);
-    expect(controller.selectedMembership?.role, 'owner');
-    expect(controller.selectedMembership?.organization.name, 'Acme Office');
-    expect(organizationGateway.createCalls, 1);
-    expect(organizationGateway.loadCalls, 2);
-  });
+      expect(controller.status, OrganizationAccessStatus.ready);
+      expect(controller.selectedMembership?.role, 'owner');
+      expect(controller.selectedMembership?.organization.name, 'Acme Office');
+      expect(organizationGateway.createCalls, 1);
+      expect(organizationGateway.loadCalls, 2);
+    },
+  );
 
   test('repository failure is recoverable through refresh', () async {
     final authGateway = FakeAuthGateway(

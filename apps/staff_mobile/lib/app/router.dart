@@ -102,7 +102,8 @@ GoRouter createAppRouter({
       ),
     ],
     errorBuilder: (context, state) {
-      final destination = !authController.isSignedIn && !authController.isPreview
+      final destination =
+          !authController.isSignedIn && !authController.isPreview
           ? AppRoutes.signIn
           : organizationController.isReady || authController.isPreview
           ? AppRoutes.dashboard
@@ -128,13 +129,11 @@ GoRouter createAppRouter({
                 const SizedBox(height: 20),
                 FilledButton(
                   onPressed: () => context.go(destination),
-                  child: Text(
-                    switch (destination) {
-                      AppRoutes.signIn => 'Return to sign in',
-                      AppRoutes.organizationSetup => 'Continue setup',
-                      _ => 'Return to dashboard',
-                    },
-                  ),
+                  child: Text(switch (destination) {
+                    AppRoutes.signIn => 'Return to sign in',
+                    AppRoutes.organizationSetup => 'Continue setup',
+                    _ => 'Return to dashboard',
+                  }),
                 ),
               ],
             ),

@@ -1,7 +1,5 @@
 abstract final class OrganizationValidators {
-  static final RegExp _slugPattern = RegExp(
-    r'^[a-z0-9]+(?:-[a-z0-9]+)*$',
-  );
+  static final RegExp _slugPattern = RegExp(r'^[a-z0-9]+(?:-[a-z0-9]+)*$');
   static final RegExp _timezonePattern = RegExp(
     r'^(?:UTC|[A-Za-z0-9_+.-]+(?:/[A-Za-z0-9_+.-]+)+)$',
   );
