@@ -1,25 +1,72 @@
 # VisitFlow Supabase
 
-This directory will contain local Supabase configuration, SQL migrations, seed data, and Edge Functions.
+This directory contains the local Supabase configuration, versioned SQL migrations, seed file, database tests, and future Edge Functions for VisitFlow.
 
-No production database migration is included in the Flutter foundation pull request.
+## Current scope
+
+Milestone 2A establishes only the tenant foundation:
+
+- organizations;
+- organization memberships;
+- audit events for organization creation;
+- reusable membership and role checks;
+- Row Level Security;
+- transactional organization creation;
+- pgTAP tenant-isolation tests.
+
+Locations, employees, visitors, invitations, approvals, QR tokens, and visit state transitions are intentionally deferred to later migrations.
+
+## Requirements
+
+- Docker Desktop or another Docker-compatible container runtime
+- Supabase CLI 2.84.2 or a reviewed compatible version
+
+The official Supabase local stack runs through Docker. Do not expose the local stack to an untrusted public network.
+
+## Local commands
+
+From the repository root:
+
+```powershell
+supabase start
+supabase db reset
+supabase db lint --level warning
+supabase test db
+```
+
+Stop the stack when finished:
+
+```powershell
+supabase stop --no-backup
+```
+
+## Migration rules
+
+- Every schema or policy change uses a new migration.
+- Never edit a migration already applied to a shared environment.
+- Keep destructive operations out of feature work unless rollback and recovery are documented.
+- RLS policies and grants are versioned with the schema.
+- CI must rebuild the database from a clean state and pass pgTAP tests before merge.
 
 ## Security requirements
 
-- Every tenant-owned table must use Row Level Security.
-- Organization membership and role checks must be enforced in PostgreSQL policies or controlled server functions.
-- Public visitor endpoints must be token-scoped and return minimal data.
-- Service-role and secret keys must never be committed or bundled into Flutter or browser code.
-- QR tokens must be opaque, time-limited, revocable, and stored as hashes where appropriate.
+- Every tenant-owned table uses Row Level Security.
+- Organization membership and role checks are enforced in PostgreSQL policies or controlled functions.
+- Client applications never receive the service-role key, database password, or private signing secrets.
+- Direct tenant writes are denied unless a reviewed policy or controlled function permits them.
+- Public visitor endpoints will be token-scoped and return minimal data.
+- QR tokens will be opaque, expiring, revocable, and stored as hashes where appropriate.
+- Tests that prove cross-organization reads and writes fail are release-blocking.
 
-## Planned structure
+## Current structure
 
 ```text
 supabase/
   config.toml
   migrations/
+  tests/database/
   functions/
   seed.sql
 ```
 
-The actual local project will be initialized in the backend foundation task before authentication and organization onboarding are implemented.
+No remote Supabase project is linked by this milestone. Deployment credentials and production database changes are intentionally excluded.
