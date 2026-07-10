@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:visitflow_staff/features/authentication/domain/auth_user.dart';
 import 'package:visitflow_staff/features/authentication/presentation/auth_session_controller.dart';
 import 'package:visitflow_staff/features/organizations/domain/organization_gateway.dart';
+import 'package:visitflow_staff/features/organizations/domain/organization_membership.dart';
 import 'package:visitflow_staff/features/organizations/presentation/organization_access_controller.dart';
 
 import '../../support/fake_auth_gateway.dart';
