@@ -7,6 +7,8 @@ import 'package:visitflow_staff/app/router.dart';
 import 'package:visitflow_staff/core/config/app_environment.dart';
 import 'package:visitflow_staff/features/authentication/presentation/auth_providers.dart';
 import 'package:visitflow_staff/features/authentication/presentation/auth_session_controller.dart';
+import 'package:visitflow_staff/features/organizations/presentation/organization_access_controller.dart';
+import 'package:visitflow_staff/features/organizations/presentation/organization_providers.dart';
 
 void main() {
   testWidgets('renders and navigates through the preview shell', (
@@ -17,13 +19,16 @@ void main() {
       supabaseInitialized: false,
     );
     final authController = AuthSessionController.preview();
+    final organizationController = OrganizationAccessController.preview();
     final router = createAppRouter(
       bootstrapResult: bootstrapResult,
       authController: authController,
+      organizationController: organizationController,
     );
 
     addTearDown(() {
       router.dispose();
+      organizationController.dispose();
       authController.dispose();
     });
 
@@ -31,6 +36,9 @@ void main() {
       ProviderScope(
         overrides: [
           authSessionControllerProvider.overrideWithValue(authController),
+          organizationAccessControllerProvider.overrideWithValue(
+            organizationController,
+          ),
         ],
         child: VisitFlowApp(bootstrapResult: bootstrapResult, router: router),
       ),
