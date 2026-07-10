@@ -29,10 +29,7 @@ Future<void> bootstrap() async {
 
   runApp(
     ProviderScope(
-      child: VisitFlowApp(
-        bootstrapResult: result,
-        router: router,
-      ),
+      child: VisitFlowApp(bootstrapResult: result, router: router),
     ),
   );
 }
