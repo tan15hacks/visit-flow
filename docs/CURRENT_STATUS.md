@@ -2,29 +2,26 @@
 
 ## Current milestone
 
-Milestone 2A — Supabase tenant foundation
+Milestone 2A completed — Supabase tenant foundation
 
 ## Current branch
 
-`feature/supabase-foundation`
+`main`
 
-## Pull request
+## Latest merged pull request
 
 Pull request #4 — `feat: establish Supabase tenant foundation`
 
-## Base
+## Latest main commit
 
-`main` after merged visitor web foundation pull request #3.
-
-## Latest verified database commit
-
-`377d1993cff4b360592b81f65dd2778f7abec7e3`
+`711447e7c280f428ee6cfb561650793e0061b492`
 
 ## Completed
 
 - Milestone 0 product and architecture documentation merged
 - Milestone 1A Flutter staff foundation merged and reviewed on Android
 - Milestone 1B visitor web foundation merged
+- Milestone 2A Supabase tenant foundation merged
 - Local Supabase configuration added
 - Safe local seed placeholder added
 - Initial immutable tenant-foundation migration added
@@ -49,10 +46,11 @@ Pull request #4 — `feat: establish Supabase tenant foundation`
 - Database lint completed successfully
 - All pgTAP tenant-isolation tests passed
 
-## In progress
+## Current state
 
-- Final head-level Supabase verification after documentation update
-- Automatic squash merge of pull request #4
+- The repository is on a verified, merged database foundation.
+- No active feature pull request is open for the next milestone yet.
+- The smallest safe next task is the Flutter authentication foundation.
 
 ## Security boundaries
 
@@ -89,7 +87,7 @@ Pull request #4 — `feat: establish Supabase tenant foundation`
 
 ## Verification state
 
-GitHub Actions run `29071873228` completed successfully for database commit `377d1993cff4b360592b81f65dd2778f7abec7e3`.
+Final head-level GitHub Actions run `29072014133` completed successfully for commit `e16c839e38fbe40c97f8f5366b13bcb15b0a38aa` before pull request #4 was squash-merged.
 
 Verified steps:
 
@@ -106,20 +104,22 @@ Verified steps:
 
 ## Next recommended task
 
-After this milestone is merged:
+Milestone 2B — Flutter authentication foundation:
 
-1. Create the Flutter authentication foundation branch.
-2. Add sign-in, sign-up, session restoration, and sign-out using Supabase Auth.
-3. Add route guards without implementing organization onboarding UI yet.
-4. Verify authentication locally and in Flutter CI.
-5. Add organization onboarding UI in a separate focused branch.
+1. Create `feature/flutter-authentication` from `main`.
+2. Add sign-in and sign-up screens using Supabase Auth.
+3. Add session restoration and sign-out.
+4. Add GoRouter authentication guards.
+5. Keep organization onboarding UI out of this branch.
+6. Add unit/widget tests and run Flutter CI.
+7. Auto-merge only after formatting, analysis, tests, and Android build pass.
 
 ## Session handover rule
 
 At the beginning of the next session:
 
 1. Read `docs/VISION.md`.
-2. Read `docs/ARCHITECTURE.md`, `docs/DATABASE_SCHEMA.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
-3. Confirm the active branch, pull request, and latest workflow result.
-4. Do not edit the verified initial migration after merge; create a new migration for every future schema or policy change.
+2. Read `docs/ARCHITECTURE.md`, `docs/FLUTTER_ARCHITECTURE.md`, `docs/DATABASE_SCHEMA.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
+3. Confirm `main` includes merge commit `711447e7c280f428ee6cfb561650793e0061b492` or a later verified commit.
+4. Do not edit the verified initial migration; create a new migration for every future schema or policy change.
 5. Do not implement organization onboarding UI until Flutter authentication and session guards are verified.
