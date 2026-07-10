@@ -31,10 +31,7 @@ final class VisitFlowApp extends StatelessWidget {
 }
 
 final class _AppErrorBoundary extends StatelessWidget {
-  const _AppErrorBoundary({
-    required this.bootstrapResult,
-    required this.child,
-  });
+  const _AppErrorBoundary({required this.bootstrapResult, required this.child});
 
   final AppBootstrapResult bootstrapResult;
   final Widget child;
