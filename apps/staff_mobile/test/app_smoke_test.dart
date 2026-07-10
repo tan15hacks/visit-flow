@@ -29,7 +29,7 @@ void main() {
       find.text('Preview mode: Supabase is not configured yet.'),
       findsOne,
     );
-    expect(find.text('Flutter foundation ready for verification'), findsOne);
+    expect(find.text('Currently inside'), findsOne);
 
     await tester.tap(find.byIcon(Icons.groups_outlined));
     await tester.pumpAndSettle();
