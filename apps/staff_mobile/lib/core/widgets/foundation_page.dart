@@ -42,16 +42,17 @@ final class FoundationPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           description,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                         ),
                       ],
                     ),
                   ),
-                  if (primaryAction case final action?) action,
+                  ?primaryAction,
                 ],
               ),
             ),
