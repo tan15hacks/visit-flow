@@ -8,7 +8,8 @@ Flutter application for organization owners, administrators, guards, receptionis
 - Dart included with the Flutter SDK
 - Android Studio or the Android SDK for Android development
 - Xcode on macOS for iOS development
-- Docker Desktop and Supabase CLI for local authentication testing
+- Docker Desktop and Supabase CLI for local authentication and onboarding testing
+- Android Platform Tools for physical-device USB testing
 
 ## First-time setup
 
@@ -40,7 +41,7 @@ Running without Supabase Dart defines keeps the existing preview shell available
 flutter run
 ```
 
-## Supabase authentication
+## Supabase authentication and onboarding
 
 VisitFlow accepts only the public Supabase URL and public publishable key. Never use a service-role key, database password, or server secret in the Flutter application.
 
@@ -52,7 +53,7 @@ flutter run \
   --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_PUBLISHABLE_KEY
 ```
 
-For local Supabase development, start the stack from the repository root:
+For local Supabase development, start and reset the stack from the repository root:
 
 ```bash
 supabase start
@@ -60,30 +61,41 @@ supabase db reset
 supabase status
 ```
 
-When testing on a physical Android phone, the phone cannot reach the PC through `127.0.0.1`. Keep the phone and PC on the same network and replace the localhost portion of the local API URL with the PC's LAN IPv4 address.
-
-Example:
+When testing on a physical Android phone connected through USB debugging, forward the local Supabase API port:
 
 ```powershell
+adb reverse tcp:54321 tcp:54321
+```
+
+Then run the app using the public local key shown by `supabase status`:
+
+```powershell
+cd apps/staff_mobile
 flutter run `
-  --dart-define=SUPABASE_URL=http://192.168.1.10:54321 `
+  --dart-define=SUPABASE_URL=http://127.0.0.1:54321 `
   --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_LOCAL_PUBLIC_KEY
 ```
 
-The public key is shown by `supabase status`. Local email confirmation is currently disabled for development, so a successful local sign-up can create an active session immediately.
+Without USB port forwarding, keep the phone and PC on the same trusted network and replace `127.0.0.1` with the PC's LAN IPv4 address.
 
-## Authentication behavior
+Local email confirmation is currently disabled for development, so a successful local sign-up can create an active session immediately.
+
+## Authentication and organization behavior
 
 When Supabase is configured:
 
 - signed-out users are sent to the sign-in screen;
 - staff can create an account with email and password;
 - existing sessions are restored by the official Supabase client;
-- authenticated users can enter the protected `/app/*` routes;
-- signing out returns the user to sign-in;
-- passwords are never stored or logged by VisitFlow.
+- active organization memberships are loaded through RLS-protected tables;
+- authenticated users without an active membership are sent to organization setup;
+- organization setup calls only `public.create_organization`;
+- the database transaction creates the organization, active owner membership, and audit event;
+- successful onboarding refreshes membership access and opens the protected workspace;
+- signing out clears organization access and returns the user to sign-in;
+- passwords and service-role credentials are never stored or logged by VisitFlow.
 
-Organization creation, membership selection, and role-aware data access are intentionally deferred to the next milestone.
+Users with more than one active organization currently enter the first returned workspace. An explicit organization switcher is intentionally deferred to a separate milestone.
 
 ## Verification
 
@@ -92,6 +104,14 @@ dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
 flutter build apk --debug
+```
+
+Database verification runs from the repository root:
+
+```bash
+supabase db reset
+supabase db lint --level warning
+supabase test db
 ```
 
 ## Current scope
@@ -105,10 +125,12 @@ This milestone includes:
 - responsive phone and tablet shell;
 - Supabase password sign-in and sign-up;
 - authentication-state listening and session restoration;
-- protected application routes;
-- sign-out;
-- preview-mode compatibility;
-- controller, router, and widget tests;
+- active organization-membership loading;
+- organization onboarding through the controlled database function;
+- membership-aware protected routes;
+- active workspace context on the dashboard;
+- sign-out and preview-mode compatibility;
+- controller, validator, router, widget, and database integration tests;
 - Android debug build verification.
 
-Tenant onboarding, visitor workflows, camera access, QR verification, notifications, reporting, and offline synchronization remain intentionally deferred.
+Organization switching, member invitations, locations, employees, visitor workflows, camera access, QR verification, notifications, reporting, billing, and offline synchronization remain intentionally deferred.

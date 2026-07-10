@@ -58,10 +58,22 @@ All notable product, architecture, security, schema, and application changes sho
 - GoRouter authentication redirects for protected application routes
 - Signed-in account display and sign-out action
 - Authentication controller, route-guard, and preview regression tests
+- Organization membership and workspace domain models
+- Organization gateway abstraction and Supabase adapter
+- Active organization-membership loading through RLS-protected tables
+- Membership-aware organization access controller
+- Responsive organization onboarding screen
+- Automatic editable workspace-slug generation
+- Organization name, slug, and timezone validation
+- Retry and sign-out onboarding recovery states
+- Membership-aware GoRouter redirects
+- Active organization context on the dashboard
+- Organization controller, validator, route, widget, and database integration tests
+- USB `adb reverse` instructions for physical-device local Supabase testing
 
 ### Changed
 
-- Project status advanced from Milestone 2A to Milestone 2B
+- Project status advanced from Milestone 2B to Milestone 2C
 - Riverpod and GoRouter moved from proposed to selected foundation dependencies
 - Flutter staff and visitor web foundations remain isolated in separate pull requests
 - Visitor web routes are explicitly preview-only until backend token validation exists
@@ -69,6 +81,9 @@ All notable product, architecture, security, schema, and application changes sho
 - Supabase development is now migration-first and verified against a clean local database
 - Organization creation now uses one controlled database transaction instead of direct table inserts
 - Configured Flutter sessions now require authentication before entering `/app/*` routes
+- Authenticated Flutter sessions now require a resolved active organization membership before entering `/app/*`
+- Newly authenticated users without memberships are routed to focused organization onboarding
+- Successful onboarding refreshes tenant access before opening the workspace
 - Backend-free Flutter preview mode remains available for UI review
 
 ### Security
@@ -86,6 +101,9 @@ All notable product, architecture, security, schema, and application changes sho
 - Passwords are handled only by the official Supabase Auth client and are not stored or logged by VisitFlow
 - Signed-out users cannot open protected staff routes when Supabase is configured
 - Authentication errors are converted to limited user-facing messages without exposing tokens or backend details
+- Flutter organization onboarding calls only the reviewed `public.create_organization` function
+- Organization, owner membership, and audit-event creation remain one database transaction
+- Client validation never replaces database constraints, RLS, or backend authorization
 
 ### Verification
 
@@ -93,9 +111,11 @@ All notable product, architecture, security, schema, and application changes sho
 - Visitor web ESLint, strict TypeScript checks, and Next.js production build passed using the committed lockfile
 - Supabase clean reset, schema lint, and pgTAP verification passed for the tenant foundation
 - Flutter authentication formatting, analysis, controller tests, route-guard tests, preview regression test, and Android debug build are enforced in CI
+- Organization onboarding formatting, analysis, controller tests, validator tests, route/widget tests, preview regression, and Android build are enforced in CI
+- Dedicated pgTAP coverage verifies normalized onboarding data, active owner creation, audit logging, duplicate-slug rejection, and transactional rollback
 
 ### Notes
 
-- Remote Supabase project linking, organization onboarding, membership selection, locations, employees, visitor workflows, camera access, QR validation, and offline synchronization remain intentionally unimplemented.
+- Remote Supabase project linking, organization switching, membership invitations, locations, employees, visitor workflows, camera access, QR validation, billing, and offline synchronization remain intentionally unimplemented.
 - Android and iOS scaffolding is generated using the installed Flutter SDK during bootstrap and CI.
-- Local physical-device authentication requires the phone to reach the development computer's Supabase API over the local network.
+- Physical-device local Supabase testing can use USB port forwarding or a trusted local network.

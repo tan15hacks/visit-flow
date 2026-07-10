@@ -7,6 +7,9 @@ import 'package:visitflow_staff/core/config/app_environment.dart';
 import 'package:visitflow_staff/features/authentication/data/supabase_auth_gateway.dart';
 import 'package:visitflow_staff/features/authentication/presentation/auth_providers.dart';
 import 'package:visitflow_staff/features/authentication/presentation/auth_session_controller.dart';
+import 'package:visitflow_staff/features/organizations/data/supabase_organization_gateway.dart';
+import 'package:visitflow_staff/features/organizations/presentation/organization_access_controller.dart';
+import 'package:visitflow_staff/features/organizations/presentation/organization_providers.dart';
 
 final class AppBootstrapResult {
   const AppBootstrapResult({
@@ -29,15 +32,23 @@ Future<void> bootstrap() async {
   final environment = AppEnvironment.fromDartDefines();
   final result = await _initializeServices(environment);
   final authController = _createAuthController(result);
+  final organizationController = _createOrganizationController(
+    result,
+    authController,
+  );
   final router = createAppRouter(
     bootstrapResult: result,
     authController: authController,
+    organizationController: organizationController,
   );
 
   runApp(
     ProviderScope(
       overrides: [
         authSessionControllerProvider.overrideWithValue(authController),
+        organizationAccessControllerProvider.overrideWithValue(
+          organizationController,
+        ),
       ],
       child: VisitFlowApp(bootstrapResult: result, router: router),
     ),
@@ -50,6 +61,19 @@ AuthSessionController _createAuthController(AppBootstrapResult result) {
   }
   return AuthSessionController(
     gateway: SupabaseAuthGateway(Supabase.instance.client),
+  );
+}
+
+OrganizationAccessController _createOrganizationController(
+  AppBootstrapResult result,
+  AuthSessionController authController,
+) {
+  if (!result.supabaseInitialized) {
+    return OrganizationAccessController.preview();
+  }
+  return OrganizationAccessController(
+    gateway: SupabaseOrganizationGateway(Supabase.instance.client),
+    authController: authController,
   );
 }
 
