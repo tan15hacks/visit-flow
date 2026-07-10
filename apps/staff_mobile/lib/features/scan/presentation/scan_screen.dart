@@ -47,9 +47,9 @@ final class _ScannerPlaceholder extends StatelessWidget {
                 const SizedBox(height: 24),
                 Text(
                   'Camera scanning is intentionally disabled',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
@@ -63,10 +63,10 @@ final class _ScannerPlaceholder extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const FilledButton.icon(
+                FilledButton.icon(
                   onPressed: null,
-                  icon: Icon(Icons.camera_alt_outlined),
-                  label: Text('Open scanner'),
+                  icon: const Icon(Icons.camera_alt_outlined),
+                  label: const Text('Open scanner'),
                 ),
               ],
             ),
