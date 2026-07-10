@@ -1,0 +1,106 @@
+name: Flutter CI
+
+on:
+  pull_request:
+    paths:
+      - 'apps/staff_mobile/**'
+      - 'scripts/bootstrap_staff_mobile.*'
+      - '.github/workflows/flutter-ci.yml'
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'apps/staff_mobile/**'
+      - 'scripts/bootstrap_staff_mobile.*'
+      - '.github/workflows/flutter-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Format, analyze, test, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: stable
+          cache: true
+
+      - name: Show Flutter environment
+        run: flutter doctor -v
+
+      - name: Generate native platform scaffolding
+        run: bash scripts/bootstrap_staff_mobile.sh
+
+      - name: Install dependencies
+        working-directory: apps/staff_mobile
+        run: flutter pub get
+
+      - name: Verify Dart formatting
+        working-directory: apps/staff_mobile
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Run static analysis
+        id: analyze
+        continue-on-error: true
+        working-directory: apps/staff_mobile
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter analyze 2>&1 | tee ../../flutter-analyze.log
+
+      - name: Upload analyzer diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visitflow-flutter-analyze-log
+          path: flutter-analyze.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Enforce static analysis result
+        if: steps.analyze.outcome == 'failure'
+        run: exit 1
+
+      - name: Run tests
+        id: tests
+        continue-on-error: true
+        working-directory: apps/staff_mobile
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter test 2>&1 | tee ../../flutter-test.log
+
+      - name: Upload test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visitflow-flutter-test-log
+          path: flutter-test.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Enforce test result
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
+
+      - name: Build Android debug APK
+        working-directory: apps/staff_mobile
+        run: flutter build apk --debug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: visitflow-staff-debug-apk
+          path: apps/staff_mobile/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7

@@ -44,11 +44,20 @@ This file records decisions that affect long-term product or technical direction
 
 **Consequences:** Features remain easier to understand and change; avoid empty ceremonial layers and over-engineering.
 
-## ADR-006 — Riverpod and GoRouter are the preferred Flutter foundation
+## ADR-006 — Riverpod and GoRouter are the Flutter foundation
 
-**Status:** Proposed pending Milestone 1 package review
+**Status:** Accepted
 
-**Decision:** Use Riverpod for dependency injection and state management and GoRouter for declarative navigation and guards unless current package compatibility review reveals a material issue.
+**Decision:** Use `flutter_riverpod` for dependency injection and state management and `go_router` for declarative navigation and future route guards.
+
+**Selected foundation versions:**
+
+- `flutter_riverpod: ^3.3.2`
+- `go_router: ^17.3.0`
+- `supabase_flutter: ^2.16.0`
+- `flutter_lints: ^6.0.0`
+
+**Consequences:** Application state and navigation use explicit, testable framework boundaries. Major dependency upgrades require a focused compatibility review.
 
 ## ADR-007 — QR codes contain opaque tokens
 
@@ -84,13 +93,39 @@ This file records decisions that affect long-term product or technical direction
 
 **Decision:** Complete and review the product, architecture, database, security, role, route, API, offline, testing, and roadmap documentation before initializing Flutter or Next.js code.
 
+## ADR-012 — Flutter stable 3.44 is the initial CI baseline
+
+**Status:** Accepted
+
+**Context:** The foundation requires a reproducible SDK target while preserving compatibility with the current stable Flutter channel.
+
+**Decision:** Verify the first Flutter foundation with Flutter 3.44.0 in GitHub Actions. Keep the package SDK constraint broad enough for compatible later Flutter 3.x releases, but review SDK upgrades in focused pull requests.
+
+**Consequences:** CI is reproducible while local developers may use compatible newer stable patch releases. Breaking Flutter upgrades do not enter unrelated feature work.
+
+## ADR-013 — Native platform scaffolding is generated from the installed Flutter SDK
+
+**Status:** Accepted for the foundation pull request
+
+**Context:** The browser development environment cannot run Flutter locally, and manually recreating generated Android and iOS project files would be unreliable.
+
+**Decision:** Keep application-owned Dart code in the repository and generate Android/iOS scaffold folders through repeatable Windows and shell scripts using `flutter create`. CI uses the same process before building.
+
+**Consequences:** The foundation can be verified without hand-written generated files. A later maintenance task may commit the verified platform scaffolding if that improves local onboarding and release configuration.
+
+## ADR-014 — Flutter and visitor web foundations use separate pull requests
+
+**Status:** Accepted
+
+**Decision:** Verify and merge the Flutter staff shell before initializing the Next.js visitor portal.
+
+**Consequences:** Smaller diffs, clearer CI failures, simpler rollback, and less cross-framework debugging.
+
 ## Decisions still required
 
-- Exact Flutter and Dart version policy
-- Exact package versions
 - Drift versus another local database
 - Supabase local-development workflow
-- Monorepo tooling, if any
+- Whether verified native platform folders should be committed
 - Visitor web hosting and server-action pattern
 - Push notification implementation details
 - Error monitoring provider

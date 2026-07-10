@@ -21,8 +21,33 @@ All notable product, architecture, security, schema, and application changes sho
 - Milestone-based development roadmap
 - Initial architecture decision records
 - Current project status and session handover process
+- Flutter staff package foundation
+- Riverpod root application scope
+- Centralized GoRouter navigation
+- Material 3 VisitFlow theme
+- Responsive phone and tablet staff shell
+- Dashboard, visitors, scanner, invitations, and more foundation screens
+- Optional Supabase initialization using public Dart defines
+- Preview mode and recoverable bootstrap failure experience
+- Flutter widget smoke test
+- Windows and shell native-platform bootstrap scripts
+- GitHub Actions formatting, analysis, testing, and Android build workflow
+- Reserved visitor web and Supabase workspaces
+
+### Changed
+
+- Project status advanced from Milestone 0 to Milestone 1A
+- Riverpod and GoRouter moved from proposed to selected foundation dependencies
+- Visitor web initialization was separated into a later focused pull request
+
+### Security
+
+- Supabase service-role and secret keys are explicitly prohibited from Flutter configuration
+- The current QR screen remains nonfunctional until server-side token verification exists
+- No real visitor information is stored or displayed in the foundation shell
 
 ### Notes
 
-- No Flutter, Next.js, Supabase migration, or production application code has been added yet.
-- Runtime, build, static-analysis, and automated-test verification will begin in Milestone 1.
+- Authentication, organization isolation migrations, visitor workflows, camera access, and offline synchronization remain intentionally unimplemented.
+- Android and iOS scaffolding is generated using the installed Flutter SDK during bootstrap and CI.
+- Runtime and build verification is pending GitHub Actions on the Flutter foundation pull request.
