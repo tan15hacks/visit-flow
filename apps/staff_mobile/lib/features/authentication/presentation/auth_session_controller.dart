@@ -17,6 +17,8 @@ final class AuthSessionController extends ChangeNotifier {
           ? AuthSessionStatus.signedOut
           : AuthSessionStatus.signedIn,
       _user = gateway.currentUser {
+    // The subscription is cancelled in dispose().
+    // ignore: cancel_subscriptions
     _subscription = gateway.authStateChanges.listen(_handleAuthUserChanged);
   }
 
