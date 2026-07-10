@@ -1,17 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-
 type ErrorPageProps = {
   error: Error & { digest?: string };
   reset: () => void;
 };
 
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
-  useEffect(() => {
-    console.error("VisitFlow visitor portal rendering error", error);
-  }, [error]);
-
+export default function ErrorPage({ reset }: ErrorPageProps) {
   return (
     <section className="portal-card" aria-labelledby="error-title">
       <div className="portal-card__content">
