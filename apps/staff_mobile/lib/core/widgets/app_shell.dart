@@ -87,9 +87,7 @@ final class AppShell extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        _EnvironmentBanner(
-                          bootstrapResult: bootstrapResult,
-                        ),
+                        _EnvironmentBanner(bootstrapResult: bootstrapResult),
                         Expanded(child: child),
                       ],
                     ),
