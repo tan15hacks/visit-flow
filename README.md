@@ -22,7 +22,7 @@ docs/             Product, architecture, security, and handover documents
 
 ## Current stage
 
-**Milestone 2B completed — Flutter authentication foundation**
+**Milestone 2C completed — Organization onboarding**
 
 The repository now contains:
 
@@ -31,12 +31,16 @@ The repository now contains:
 - a migration-first Supabase tenant database foundation with RLS tests;
 - Flutter email/password sign-up and sign-in;
 - restored authentication sessions and sign-out;
-- protected staff routes when Supabase is configured;
+- active organization-membership loading;
+- a membership-aware protected route gate;
+- secure organization onboarding through `public.create_organization`;
+- atomic organization, active owner membership, and audit-event creation;
+- active organization context on the dashboard;
 - backend-free preview mode for UI review.
 
-Organization onboarding, membership selection, locations, employees, real visitor workflows, QR verification, reporting, and offline synchronization are not implemented yet.
+Organization switching, locations, entrances, employees, real visitor workflows, QR verification, reporting, billing, and offline synchronization are not implemented yet.
 
-The next focused milestone is **Milestone 2C — Organization onboarding** using the existing transactional `public.create_organization` database function.
+The next focused milestone is **Milestone 3A — Location and entrance foundation**. Visitor registration and entrance QR work remain blocked until those tenant-owned foundations are verified.
 
 ## Flutter quick start
 
@@ -58,7 +62,7 @@ flutter pub get
 flutter run
 ```
 
-Running without Supabase Dart defines opens preview mode. See [`apps/staff_mobile/README.md`](apps/staff_mobile/README.md) for hosted and local Supabase authentication commands, including physical-device configuration.
+Running without Supabase Dart defines opens preview mode. See [`apps/staff_mobile/README.md`](apps/staff_mobile/README.md) for hosted and local Supabase authentication and onboarding commands, including physical-device USB configuration.
 
 ## Visitor web quick start
 
@@ -85,4 +89,4 @@ Use `supabase stop` when local development is complete.
 
 See [`apps/staff_mobile/README.md`](apps/staff_mobile/README.md), [`apps/visitor_web/README.md`](apps/visitor_web/README.md), and [`supabase/README.md`](supabase/README.md) for detailed setup and verification commands.
 
-See [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md) for the active milestone, verification state, and next task.
+See [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md) for the active milestone, verification state, security boundaries, and next task.
