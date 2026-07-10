@@ -1,0 +1,58 @@
+name: Visitor Web CI
+
+on:
+  pull_request:
+    paths:
+      - 'apps/visitor_web/**'
+      - '.github/workflows/visitor-web-ci.yml'
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'apps/visitor_web/**'
+      - '.github/workflows/visitor-web-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Install, lint, typecheck, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        working-directory: apps/visitor_web
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/visitor_web/package-lock.json
+
+      - name: Install dependencies and create lockfile
+        run: npm install --no-audit --no-fund
+
+      - name: Upload generated lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: visitflow-visitor-web-package-lock
+          path: apps/visitor_web/package-lock.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript checks
+        run: npm run typecheck
+
+      - name: Build production portal
+        run: npm run build
