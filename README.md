@@ -5,7 +5,7 @@ VisitFlow is a mobile-first B2B visitor management SaaS for offices, schools, cl
 ## Technology direction
 
 - **Primary app:** Flutter and Dart, Android-first with future iOS support
-- **Visitor portal:** Lightweight Next.js, TypeScript, and Tailwind CSS web experience
+- **Visitor portal:** Next.js, TypeScript, and Tailwind CSS
 - **Backend:** Supabase Authentication, PostgreSQL, Storage, Edge Functions, and selective Realtime
 - **Architecture:** Multi-tenant, feature-first, secure by default, and designed for unreliable connectivity
 
@@ -14,7 +14,7 @@ VisitFlow is a mobile-first B2B visitor management SaaS for offices, schools, cl
 ```text
 apps/
   staff_mobile/   Flutter staff application
-  visitor_web/    Visitor-facing web portal workspace
+  visitor_web/    Visitor-facing Next.js portal
 scripts/          Repeatable local setup scripts
 supabase/         Backend migrations and functions workspace
 docs/             Product, architecture, security, and handover documents
@@ -22,11 +22,11 @@ docs/             Product, architecture, security, and handover documents
 
 ## Current stage
 
-**Milestone 1A — Flutter application foundation**
+**Milestone 1B — Visitor web foundation**
 
-The active branch contains the Flutter bootstrap, Riverpod root scope, centralized GoRouter navigation, Material 3 theme, responsive phone/tablet shell, foundation screens, smoke testing, and GitHub Actions verification.
+The Flutter staff foundation is merged and runs on Android. The active visitor web branch adds the public portal shell and preview routes for registration, invitations, passes, and self-checkout.
 
-Authentication, organization data, visitor workflows, camera scanning, QR validation, and offline synchronization are not implemented yet.
+Authentication, organization data, real visitor submission, token validation, QR generation, check-in, check-out, and offline synchronization are not implemented yet.
 
 ## Flutter quick start
 
@@ -48,6 +48,16 @@ flutter pub get
 flutter run
 ```
 
-See [`apps/staff_mobile/README.md`](apps/staff_mobile/README.md) for configuration and verification commands.
+## Visitor web quick start
+
+```powershell
+cd apps/visitor_web
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+See [`apps/staff_mobile/README.md`](apps/staff_mobile/README.md) and [`apps/visitor_web/README.md`](apps/visitor_web/README.md) for detailed setup and verification commands.
 
 See [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md) for the active milestone, verification state, and next task.
