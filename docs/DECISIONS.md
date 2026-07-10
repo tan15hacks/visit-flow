@@ -179,6 +179,16 @@ This file records decisions that affect long-term product or technical direction
 
 **Consequences:** Authentication behavior is testable with a fake gateway, restored sessions and sign-out drive navigation consistently, and future identity-provider changes remain contained. Client-side route guards improve UX but never replace PostgreSQL RLS or backend authorization.
 
+## ADR-020 — Active organization membership gates the staff workspace
+
+**Status:** Accepted
+
+**Context:** Authentication proves identity but does not establish tenant access. A newly authenticated account may have no organization, while an existing account may have one or more active memberships. Allowing the app shell to open before resolving membership would create ambiguous tenant context and increase the risk of unscoped data access.
+
+**Decision:** Wrap organization queries and creation behind an `OrganizationGateway`. Maintain active memberships and the selected workspace in one `OrganizationAccessController`. GoRouter requires a signed-in user to have a resolved active organization membership before entering `/app/*`. Users without a membership are sent to focused onboarding, which calls only `public.create_organization`. Preview mode remains explicitly outside this authenticated tenant gate.
+
+**Consequences:** Tenant context is established before protected staff features render, onboarding and membership behavior are testable without live services, and database RLS remains the authoritative access boundary. Accounts with multiple organizations temporarily use the first returned active membership until a dedicated organization switcher is implemented.
+
 ## Decisions still required
 
 - Drift versus another local database for Flutter offline storage
