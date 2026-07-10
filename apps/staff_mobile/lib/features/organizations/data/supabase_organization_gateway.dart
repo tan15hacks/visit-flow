@@ -9,10 +9,18 @@ final class SupabaseOrganizationGateway implements OrganizationGateway {
 
   @override
   Future<List<OrganizationMembership>> loadActiveMemberships() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      throw const OrganizationFailure(
+        'Your session expired. Sign in again before continuing.',
+      );
+    }
+
     try {
       final List<Map<String, dynamic>> membershipRows = await _client
           .from('organization_members')
           .select('id, organization_id, role')
+          .eq('user_id', userId)
           .eq('status', 'active')
           .order('created_at');
 
@@ -20,10 +28,10 @@ final class SupabaseOrganizationGateway implements OrganizationGateway {
         return const [];
       }
 
-      final organizationIds = <String>[
+      final organizationIds = <String>{
         for (final row in membershipRows)
           _readRequiredString(row, 'organization_id'),
-      ];
+      }.toList(growable: false);
 
       final List<Map<String, dynamic>> organizationRows = await _client
           .from('organizations')
@@ -69,6 +77,12 @@ final class SupabaseOrganizationGateway implements OrganizationGateway {
     required String slug,
     required String timezone,
   }) async {
+    if (_client.auth.currentUser == null) {
+      throw const OrganizationFailure(
+        'Your session expired. Sign in again before continuing.',
+      );
+    }
+
     try {
       final Object? response = await _client.rpc(
         'create_organization',
