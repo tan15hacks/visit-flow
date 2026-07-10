@@ -8,13 +8,17 @@ Milestone 1B — Visitor web foundation
 
 `feature/visitor-web-foundation`
 
+## Pull request
+
+Draft pull request #3 — `feat: establish visitor web portal foundation`
+
 ## Base
 
 `main` after merged Flutter foundation pull request #2.
 
 ## Latest verified implementation commit
 
-Pending visitor web CI verification.
+`00a88bfcfa4a873923711cb89042a93dad091305`
 
 ## Completed
 
@@ -32,20 +36,22 @@ Pending visitor web CI verification.
 - Visitor self-checkout preview route added
 - Safe not-found and recoverable error experiences added
 - Public environment template added
-- Visitor web CI workflow added
+- Exact npm dependency lockfile committed
+- Visitor web CI hardened to read-only permissions and `npm ci`
+- ESLint passed
+- Strict TypeScript verification passed
+- Next.js production build passed
 
 ## In progress
 
-- Dependency resolution and package lock capture
-- ESLint verification
-- TypeScript verification
-- Next.js production build verification
-- Visitor web foundation pull request preparation
+- Manual browser review on phone-sized and desktop-sized viewports
+- Pull request review and merge decision
 
 ## Security boundaries
 
 - URL references are treated as opaque values.
 - Dynamic token values are not rendered into the page.
+- Dynamic token values are not intentionally written to browser logs.
 - No organization, visitor, invitation, pass, or visit data is loaded.
 - No backend mutation or public Supabase call is implemented.
 - No service-role key or server secret may use a `NEXT_PUBLIC_` environment variable.
@@ -69,28 +75,29 @@ Pending visitor web CI verification.
 - The visitor portal currently uses preview content only.
 - Dynamic routes recognize that a reference exists but do not validate it.
 - No real visitor information can be submitted.
-- The dependency lockfile will be committed after CI generates and verifies it.
 - Hosting and deployment configuration are not part of this foundation PR.
+- CI verification does not replace manual responsive and usability review.
 
 ## Verification state
 
-Pending GitHub Actions verification for:
+GitHub Actions run `29071291276` completed successfully for implementation commit `00a88bfcfa4a873923711cb89042a93dad091305`.
 
-1. Node.js setup
-2. Dependency installation
+Verified steps:
+
+1. Node.js 22 setup
+2. Locked dependency installation with `npm ci`
 3. ESLint
-4. TypeScript checks
+4. Strict TypeScript checks
 5. Next.js production build
 
 ## Next recommended task
 
-1. Open the visitor web foundation pull request.
-2. Resolve only confirmed CI failures.
-3. Commit the generated dependency lockfile.
-4. Run the hardened CI workflow using `npm ci`.
-5. Review the portal locally in a mobile-sized browser.
-6. Merge using squash only after CI and manual review succeed.
-7. Begin Supabase project and authentication planning in a separate branch.
+1. Pull the feature branch locally.
+2. Run the visitor portal in a browser.
+3. Review home, registration, invitation, pass, checkout, error, and not-found layouts.
+4. Review mobile and desktop widths.
+5. Merge pull request #3 using squash only after manual review succeeds.
+6. Begin Supabase project and authentication planning in a separate branch.
 
 ## Session handover rule
 
@@ -99,5 +106,5 @@ At the beginning of the next session:
 1. Read `docs/VISION.md`.
 2. Read `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
 3. Confirm the active branch, pull request, and latest workflow result.
-4. Inspect CI diagnostics before editing code.
-5. Do not add backend submission or token validation inside the foundation PR.
+4. Do not add backend submission or token validation inside the foundation PR.
+5. Do not start the Supabase milestone until pull request #3 is reviewed and merged.
