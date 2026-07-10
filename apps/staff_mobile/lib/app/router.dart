@@ -68,10 +68,7 @@ GoRouter createAppRouter({required AppBootstrapResult bootstrapResult}) {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  state.uri.toString(),
-                  textAlign: TextAlign.center,
-                ),
+                Text(state.uri.toString(), textAlign: TextAlign.center),
                 const SizedBox(height: 20),
                 FilledButton(
                   onPressed: () => context.go(AppRoutes.dashboard),
