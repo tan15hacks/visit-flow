@@ -7,12 +7,11 @@ import 'package:visitflow_staff/app/router.dart';
 import 'package:visitflow_staff/core/config/app_environment.dart';
 
 void main() {
-  testWidgets('renders and navigates through the preview shell', (tester) async {
+  testWidgets('renders and navigates through the preview shell', (
+    tester,
+  ) async {
     const bootstrapResult = AppBootstrapResult(
-      environment: AppEnvironment(
-        supabaseUrl: '',
-        supabasePublishableKey: '',
-      ),
+      environment: AppEnvironment(supabaseUrl: '', supabasePublishableKey: ''),
       supabaseInitialized: false,
     );
     final router = createAppRouter(bootstrapResult: bootstrapResult);
@@ -21,15 +20,15 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        child: VisitFlowApp(
-          bootstrapResult: bootstrapResult,
-          router: router,
-        ),
+        child: VisitFlowApp(bootstrapResult: bootstrapResult, router: router),
       ),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Preview mode: Supabase is not configured yet.'), findsOne);
+    expect(
+      find.text('Preview mode: Supabase is not configured yet.'),
+      findsOne,
+    );
     expect(find.text('Flutter foundation ready for verification'), findsOne);
 
     await tester.tap(find.byIcon(Icons.groups_outlined));
