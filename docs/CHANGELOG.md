@@ -43,14 +43,25 @@ All notable product, architecture, security, schema, and application changes sho
 - Visitor web environment template
 - Committed npm dependency lockfile
 - Visitor web lint, typecheck, and production build workflow
+- Supabase local project configuration
+- Initial immutable tenant-foundation migration
+- Organization and membership role/status enums
+- Organizations, organization memberships, and audit-log tables
+- Security-definer membership and role helper functions
+- Transactional `create_organization` database function
+- Row Level Security policies and deny-by-default client grants
+- pgTAP tests for cross-tenant isolation and onboarding integrity
+- Supabase migration, lint, and database-test GitHub Actions workflow
 
 ### Changed
 
-- Project status advanced from Milestone 1A to Milestone 1B
+- Project status advanced from Milestone 1B to Milestone 2A
 - Riverpod and GoRouter moved from proposed to selected foundation dependencies
 - Flutter staff and visitor web foundations remain isolated in separate pull requests
 - Visitor web routes are explicitly preview-only until backend token validation exists
 - Visitor web CI now uses read-only permissions and reproducible `npm ci`
+- Supabase development is now migration-first and verified against a clean local database
+- Organization creation now uses one controlled database transaction instead of direct table inserts
 
 ### Security
 
@@ -60,14 +71,19 @@ All notable product, architecture, security, schema, and application changes sho
 - Visitor web error handling does not intentionally log route context
 - Visitor web pages are marked non-indexable during foundation development
 - No real visitor information is stored, submitted, or displayed in either foundation application
+- RLS is enabled on every tenant-owned table introduced in Milestone 2A
+- Anonymous users receive no organization, membership, audit, or onboarding access
+- Authenticated clients receive read-only tenant access and cannot directly insert organizations or memberships
+- Cross-organization visibility, employee least privilege, and suspended-membership revocation are release-blocking database tests
 
 ### Verification
 
 - Flutter formatting, analysis, widget testing, and Android debug build passed in GitHub Actions
 - Visitor web ESLint, strict TypeScript checks, and Next.js production build passed using the committed lockfile
+- Supabase clean reset, schema lint, and pgTAP verification are required before the database foundation merges
 
 ### Notes
 
-- Authentication, organization isolation migrations, visitor workflows, camera access, and offline synchronization remain intentionally unimplemented.
+- Authentication UI, remote Supabase linking, locations, employees, visitor workflows, camera access, QR validation, and offline synchronization remain intentionally unimplemented.
 - Android and iOS scaffolding is generated using the installed Flutter SDK during bootstrap and CI.
-- Visitor web manual responsive review remains required before merging the foundation pull request.
+- No production Supabase project or deployment credential is connected by the database foundation milestone.
