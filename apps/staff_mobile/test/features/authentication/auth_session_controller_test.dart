@@ -16,7 +16,10 @@ void main() {
 
   test('restores an existing gateway user', () async {
     final gateway = FakeAuthGateway(
-      currentUser: const AuthUser(id: 'existing-user', email: 'staff@example.com'),
+      currentUser: const AuthUser(
+        id: 'existing-user',
+        email: 'staff@example.com',
+      ),
     );
     final controller = AuthSessionController(gateway: gateway);
     addTearDown(() async {
@@ -36,10 +39,7 @@ void main() {
       await gateway.dispose();
     });
 
-    await controller.signIn(
-      email: 'staff@example.com',
-      password: 'password1',
-    );
+    await controller.signIn(email: 'staff@example.com', password: 'password1');
 
     expect(controller.status, AuthSessionStatus.signedIn);
     expect(controller.user?.email, 'staff@example.com');
@@ -54,10 +54,7 @@ void main() {
       await gateway.dispose();
     });
 
-    await controller.signUp(
-      email: 'new@example.com',
-      password: 'password1',
-    );
+    await controller.signUp(email: 'new@example.com', password: 'password1');
 
     expect(controller.status, AuthSessionStatus.signedOut);
     expect(controller.user, isNull);
@@ -66,7 +63,10 @@ void main() {
 
   test('sign out clears the active session', () async {
     final gateway = FakeAuthGateway(
-      currentUser: const AuthUser(id: 'existing-user', email: 'staff@example.com'),
+      currentUser: const AuthUser(
+        id: 'existing-user',
+        email: 'staff@example.com',
+      ),
     );
     final controller = AuthSessionController(gateway: gateway);
     addTearDown(() async {

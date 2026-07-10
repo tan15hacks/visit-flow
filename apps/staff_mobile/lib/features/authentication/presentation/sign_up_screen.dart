@@ -81,7 +81,8 @@ final class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     enabled: !controller.isBusy,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      helperText: 'At least 8 characters, including a letter and number.',
+                      helperText:
+                          'At least 8 characters, including a letter and number.',
                       prefixIcon: const Icon(Icons.lock_outline_rounded),
                       suffixIcon: IconButton(
                         tooltip: _obscurePassword
@@ -149,7 +150,9 @@ final class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           )
                         : const Icon(Icons.person_add_alt_1_rounded),
                     label: Text(
-                      controller.isBusy ? 'Creating account…' : 'Create account',
+                      controller.isBusy
+                          ? 'Creating account…'
+                          : 'Create account',
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -176,7 +179,9 @@ final class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-    await ref.read(authSessionControllerProvider).signUp(
+    await ref
+        .read(authSessionControllerProvider)
+        .signUp(
           email: _emailController.text,
           password: _passwordController.text,
         );

@@ -8,15 +8,15 @@ enum AuthSessionStatus { preview, signedOut, signedIn }
 
 final class AuthSessionController extends ChangeNotifier {
   AuthSessionController.preview()
-      : _gateway = null,
-        _status = AuthSessionStatus.preview;
+    : _gateway = null,
+      _status = AuthSessionStatus.preview;
 
   AuthSessionController({required AuthGateway gateway})
-      : _gateway = gateway,
-        _status = gateway.currentUser == null
-            ? AuthSessionStatus.signedOut
-            : AuthSessionStatus.signedIn,
-        _user = gateway.currentUser {
+    : _gateway = gateway,
+      _status = gateway.currentUser == null
+          ? AuthSessionStatus.signedOut
+          : AuthSessionStatus.signedIn,
+      _user = gateway.currentUser {
     _subscription = gateway.authStateChanges.listen(_handleAuthUserChanged);
   }
 
@@ -36,10 +36,7 @@ final class AuthSessionController extends ChangeNotifier {
   bool get isPreview => _status == AuthSessionStatus.preview;
   bool get isSignedIn => _status == AuthSessionStatus.signedIn;
 
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     final gateway = _requireGateway();
     _beginOperation();
     try {
@@ -55,10 +52,7 @@ final class AuthSessionController extends ChangeNotifier {
     }
   }
 
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signUp({required String email, required String password}) async {
     final gateway = _requireGateway();
     _beginOperation();
     try {

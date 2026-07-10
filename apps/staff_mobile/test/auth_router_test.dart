@@ -82,10 +82,7 @@ void main() {
       find.byType(TextFormField).at(0),
       'staff@example.com',
     );
-    await tester.enterText(
-      find.byType(TextFormField).at(1),
-      'password1',
-    );
+    await tester.enterText(find.byType(TextFormField).at(1), 'password1');
     await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
     await tester.pumpAndSettle();
 

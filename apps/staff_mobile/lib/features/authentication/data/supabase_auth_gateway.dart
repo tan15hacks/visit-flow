@@ -9,8 +9,8 @@ final class SupabaseAuthGateway implements AuthGateway {
 
   @override
   Stream<AuthUser?> get authStateChanges => _client.auth.onAuthStateChange.map(
-        (data) => _mapUser(data.session?.user),
-      );
+    (data) => _mapUser(data.session?.user),
+  );
 
   @override
   AuthUser? get currentUser => _mapUser(_client.auth.currentUser);

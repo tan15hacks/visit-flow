@@ -6,7 +6,10 @@ final class AuthUser {
 }
 
 final class AuthSignUpResult {
-  const AuthSignUpResult({required this.user, required this.requiresEmailConfirmation});
+  const AuthSignUpResult({
+    required this.user,
+    required this.requiresEmailConfirmation,
+  });
 
   final AuthUser user;
   final bool requiresEmailConfirmation;

@@ -109,9 +109,7 @@ final class _SignInScreenState extends ConsumerState<SignInScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.login_rounded),
-                    label: Text(
-                      controller.isBusy ? 'Signing in…' : 'Sign in',
-                    ),
+                    label: Text(controller.isBusy ? 'Signing in…' : 'Sign in'),
                   ),
                   const SizedBox(height: 12),
                   TextButton(
@@ -137,7 +135,9 @@ final class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-    await ref.read(authSessionControllerProvider).signIn(
+    await ref
+        .read(authSessionControllerProvider)
+        .signIn(
           email: _emailController.text,
           password: _passwordController.text,
         );
