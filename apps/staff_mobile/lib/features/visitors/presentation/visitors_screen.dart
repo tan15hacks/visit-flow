@@ -16,10 +16,7 @@ final class VisitorsScreen extends StatelessWidget {
         icon: const Icon(Icons.person_add_alt_1_rounded),
         label: const Text('New visitor'),
       ),
-      children: const [
-        _VisitorFilters(),
-        _EmptyVisitorsState(),
-      ],
+      children: const [_VisitorFilters(), _EmptyVisitorsState()],
     );
   }
 }
@@ -94,9 +91,9 @@ final class _EmptyVisitorsState extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   'No visitor records yet',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 Text(
