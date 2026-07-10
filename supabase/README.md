@@ -40,6 +40,12 @@ Stop the stack when finished:
 supabase stop --no-backup
 ```
 
+## CI verification
+
+The database workflow rebuilds the local stack from a clean state, lints the schema, and runs the pgTAP suite. Pull request #4 first passed this workflow in GitHub Actions run `29071873228`.
+
+Future database changes must pass the same workflow from the current branch head before merge.
+
 ## Migration rules
 
 - Every schema or policy change uses a new migration.
