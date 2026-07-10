@@ -17,13 +17,11 @@ final class AuthSessionController extends ChangeNotifier {
           ? AuthSessionStatus.signedOut
           : AuthSessionStatus.signedIn,
       _user = gateway.currentUser {
-    // The subscription is cancelled in dispose().
-    // ignore: cancel_subscriptions
     _subscription = gateway.authStateChanges.listen(_handleAuthUserChanged);
   }
 
   final AuthGateway? _gateway;
-  StreamSubscription<AuthUser?>? _subscription;
+  late final StreamSubscription<AuthUser?> _subscription;
   AuthSessionStatus _status;
   AuthUser? _user;
   bool _isBusy = false;
@@ -106,9 +104,8 @@ final class AuthSessionController extends ChangeNotifier {
 
   @override
   void dispose() {
-    final subscription = _subscription;
-    if (subscription != null) {
-      unawaited(subscription.cancel());
+    if (!isPreview) {
+      unawaited(_subscription.cancel());
     }
     super.dispose();
   }
