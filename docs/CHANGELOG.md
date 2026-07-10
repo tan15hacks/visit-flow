@@ -41,6 +41,7 @@ All notable product, architecture, security, schema, and application changes sho
 - Visitor self-checkout preview route
 - Safe not-found and error experiences
 - Visitor web environment template
+- Committed npm dependency lockfile
 - Visitor web lint, typecheck, and production build workflow
 
 ### Changed
@@ -49,17 +50,24 @@ All notable product, architecture, security, schema, and application changes sho
 - Riverpod and GoRouter moved from proposed to selected foundation dependencies
 - Flutter staff and visitor web foundations remain isolated in separate pull requests
 - Visitor web routes are explicitly preview-only until backend token validation exists
+- Visitor web CI now uses read-only permissions and reproducible `npm ci`
 
 ### Security
 
 - Supabase service-role and secret keys are explicitly prohibited from Flutter and public web configuration
 - The Flutter QR screen remains nonfunctional until server-side token verification exists
 - Visitor web token values are not rendered into route output
+- Visitor web error handling does not intentionally log route context
 - Visitor web pages are marked non-indexable during foundation development
 - No real visitor information is stored, submitted, or displayed in either foundation application
+
+### Verification
+
+- Flutter formatting, analysis, widget testing, and Android debug build passed in GitHub Actions
+- Visitor web ESLint, strict TypeScript checks, and Next.js production build passed using the committed lockfile
 
 ### Notes
 
 - Authentication, organization isolation migrations, visitor workflows, camera access, and offline synchronization remain intentionally unimplemented.
 - Android and iOS scaffolding is generated using the installed Flutter SDK during bootstrap and CI.
-- Visitor web dependency lockfile and production build verification are pending CI.
+- Visitor web manual responsive review remains required before merging the foundation pull request.
