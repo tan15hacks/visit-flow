@@ -45,20 +45,9 @@ jobs:
         working-directory: apps/staff_mobile
         run: flutter pub get
 
-      - name: Apply Dart formatting in the runner
+      - name: Verify Dart formatting
         working-directory: apps/staff_mobile
-        run: dart format lib test
-
-      - name: Capture formatting patch
-        run: git diff -- apps/staff_mobile/lib apps/staff_mobile/test > formatting.patch
-
-      - name: Upload formatting patch
-        uses: actions/upload-artifact@v4
-        with:
-          name: visitflow-dart-formatting-patch
-          path: formatting.patch
-          if-no-files-found: error
-          retention-days: 7
+        run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Run static analysis
         id: analyze
@@ -115,6 +104,3 @@ jobs:
           path: apps/staff_mobile/build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
           retention-days: 7
-
-      - name: Verify repository formatting is clean
-        run: git diff --exit-code -- apps/staff_mobile/lib apps/staff_mobile/test
