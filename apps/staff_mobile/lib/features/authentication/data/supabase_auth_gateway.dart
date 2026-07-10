@@ -1,4 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 import 'package:visitflow_staff/features/authentication/domain/auth_gateway.dart';
 import 'package:visitflow_staff/features/authentication/domain/auth_user.dart';
 
