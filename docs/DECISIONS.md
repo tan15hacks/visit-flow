@@ -121,6 +121,34 @@ This file records decisions that affect long-term product or technical direction
 
 **Consequences:** Smaller diffs, clearer CI failures, simpler rollback, and less cross-framework debugging.
 
+## ADR-015 — Next.js App Router is the visitor portal foundation
+
+**Status:** Accepted
+
+**Context:** Visitors need a lightweight browser experience for public token-scoped workflows without installing the Flutter staff application.
+
+**Decision:** Use Next.js 16 App Router, strict TypeScript, Tailwind CSS, and Node.js 20.9 or later for the visitor portal foundation.
+
+**Selected foundation versions:**
+
+- `next: 16.2.10`
+- `react: ^19.2.0`
+- `react-dom: ^19.2.0`
+- `tailwindcss: ^4.3.0`
+- `typescript: ^5.9.0`
+
+**Consequences:** Public routes use server-first rendering and file-system routing. Dependency upgrades require focused compatibility checks and a clean production build.
+
+## ADR-016 — Public route tokens are never rendered or logged
+
+**Status:** Accepted
+
+**Context:** Entrance, invitation, pass, and checkout links will carry opaque references that function as sensitive capabilities.
+
+**Decision:** Dynamic route references may be received by the server but must not be displayed, sent to analytics, included in client logs, or exposed in error messages. The backend will later validate them server-side before returning minimum necessary data.
+
+**Consequences:** Preview pages can establish route structure without weakening future token security. Observability must use safe request identifiers rather than raw route references.
+
 ## Decisions still required
 
 - Drift versus another local database
