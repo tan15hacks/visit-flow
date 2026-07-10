@@ -2,109 +2,124 @@
 
 ## Current milestone
 
-Milestone 1B — Visitor web foundation
+Milestone 2A — Supabase tenant foundation
 
 ## Current branch
 
-`feature/visitor-web-foundation`
+`feature/supabase-foundation`
 
 ## Pull request
 
-Draft pull request #3 — `feat: establish visitor web portal foundation`
+Pull request #4 — `feat: establish Supabase tenant foundation`
 
 ## Base
 
-`main` after merged Flutter foundation pull request #2.
+`main` after merged visitor web foundation pull request #3.
 
-## Latest verified implementation commit
+## Latest verified database commit
 
-`00a88bfcfa4a873923711cb89042a93dad091305`
+`377d1993cff4b360592b81f65dd2778f7abec7e3`
 
 ## Completed
 
 - Milestone 0 product and architecture documentation merged
-- Milestone 1A Flutter staff foundation merged and reviewed on an Android device
-- Next.js visitor portal package initialized
-- Next.js App Router and strict TypeScript configuration added
-- Tailwind CSS design foundation added
-- Accessible public header, footer, skip link, and responsive shell added
-- Portal metadata set to prevent search indexing during foundation development
-- Public portal overview route added
-- Entrance registration preview route added
-- Invitation confirmation preview route added
-- Digital visitor pass preview route added
-- Visitor self-checkout preview route added
-- Safe not-found and recoverable error experiences added
-- Public environment template added
-- Exact npm dependency lockfile committed
-- Visitor web CI hardened to read-only permissions and `npm ci`
-- ESLint passed
-- Strict TypeScript verification passed
-- Next.js production build passed
+- Milestone 1A Flutter staff foundation merged and reviewed on Android
+- Milestone 1B visitor web foundation merged
+- Local Supabase configuration added
+- Safe local seed placeholder added
+- Initial immutable tenant-foundation migration added
+- Membership role and status enums added
+- Organizations table added
+- Organization memberships table added
+- Organization audit-log table added
+- Updated-at triggers added
+- Security-definer active-membership helper added
+- Security-definer organization-role helper added
+- Row Level Security enabled for all introduced tenant tables
+- Anonymous access revoked
+- Authenticated direct organization and membership writes revoked
+- Transactional `create_organization` function added
+- Organization creation now produces an active owner membership and audit event atomically
+- pgTAP tenant-isolation test suite added
+- Supabase CI workflow added
+- Supabase local-development and migration rules documented
+- Supabase and transactional-onboarding architecture decisions recorded
+- Local Supabase stack started successfully in GitHub Actions
+- Database rebuilt successfully from a clean migration state
+- Database lint completed successfully
+- All pgTAP tenant-isolation tests passed
 
 ## In progress
 
-- Manual browser review on phone-sized and desktop-sized viewports
-- Pull request review and merge decision
+- Final head-level Supabase verification after documentation update
+- Automatic squash merge of pull request #4
 
 ## Security boundaries
 
-- URL references are treated as opaque values.
-- Dynamic token values are not rendered into the page.
-- Dynamic token values are not intentionally written to browser logs.
-- No organization, visitor, invitation, pass, or visit data is loaded.
-- No backend mutation or public Supabase call is implemented.
-- No service-role key or server secret may use a `NEXT_PUBLIC_` environment variable.
-- Core actions remain disabled until server-side validation and authorization exist.
+- Every introduced tenant-owned table has RLS enabled.
+- Tenant access depends on an active organization membership.
+- Organization owners and admins may read membership and audit information; employees may read only their own membership.
+- Suspended memberships lose organization access immediately.
+- Anonymous clients cannot read tenant data or call organization creation.
+- Authenticated clients cannot directly insert organizations, memberships, or audit events.
+- Organization creation is limited to a reviewed security-definer function.
+- The service-role key, database password, and private secrets are not committed or bundled into client applications.
 
 ## Intentionally deferred
 
-- Supabase client and server integration
-- Organization and entrance lookup
-- Visitor registration submission
-- Privacy-consent persistence
-- Invitation validation and confirmation mutations
-- QR pass generation
-- Visitor check-in and check-out mutations
-- Authentication and organization onboarding in Flutter
-- SQL migrations and Row Level Security policies
+- Linking a hosted Supabase project
+- Production database deployment
+- Flutter authentication screens and session guards
+- Organization onboarding UI
+- Membership invitations and role-management functions
+- Locations, entrances, departments, and employees
+- Visitors, visits, approvals, and invitations
+- Public entrance-token validation
+- QR pass generation and verification
 - Notifications, reports, and offline synchronization
 
 ## Known limitations
 
-- The visitor portal currently uses preview content only.
-- Dynamic routes recognize that a reference exists but do not validate it.
-- No real visitor information can be submitted.
-- Hosting and deployment configuration are not part of this foundation PR.
-- CI verification does not replace manual responsive and usability review.
+- The migration currently covers only organizations, memberships, and organization-creation audit events.
+- Organization profile updates and membership changes have no client-facing mutation functions yet.
+- Local Supabase development requires Docker.
+- Email confirmation is disabled in local configuration to simplify development; production auth policy remains undecided.
+- No remote Supabase project is linked.
+- No application currently calls `create_organization`.
 
 ## Verification state
 
-GitHub Actions run `29071291276` completed successfully for implementation commit `00a88bfcfa4a873923711cb89042a93dad091305`.
+GitHub Actions run `29071873228` completed successfully for database commit `377d1993cff4b360592b81f65dd2778f7abec7e3`.
 
 Verified steps:
 
-1. Node.js 22 setup
-2. Locked dependency installation with `npm ci`
-3. ESLint
-4. Strict TypeScript checks
-5. Next.js production build
+1. Supabase CLI 2.84.2 setup
+2. Local Supabase Docker stack startup
+3. Clean database reset from migrations
+4. Database lint at warning level
+5. pgTAP database tests
+6. Cross-tenant read isolation
+7. Employee least privilege
+8. Suspended-membership access revocation
+9. Transactional organization-owner-audit creation
+10. Clean local stack shutdown
 
 ## Next recommended task
 
-1. Pull the feature branch locally.
-2. Run the visitor portal in a browser.
-3. Review home, registration, invitation, pass, checkout, error, and not-found layouts.
-4. Review mobile and desktop widths.
-5. Merge pull request #3 using squash only after manual review succeeds.
-6. Begin Supabase project and authentication planning in a separate branch.
+After this milestone is merged:
+
+1. Create the Flutter authentication foundation branch.
+2. Add sign-in, sign-up, session restoration, and sign-out using Supabase Auth.
+3. Add route guards without implementing organization onboarding UI yet.
+4. Verify authentication locally and in Flutter CI.
+5. Add organization onboarding UI in a separate focused branch.
 
 ## Session handover rule
 
 At the beginning of the next session:
 
 1. Read `docs/VISION.md`.
-2. Read `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
+2. Read `docs/ARCHITECTURE.md`, `docs/DATABASE_SCHEMA.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
 3. Confirm the active branch, pull request, and latest workflow result.
-4. Do not add backend submission or token validation inside the foundation PR.
-5. Do not start the Supabase milestone until pull request #3 is reviewed and merged.
+4. Do not edit the verified initial migration after merge; create a new migration for every future schema or policy change.
+5. Do not implement organization onboarding UI until Flutter authentication and session guards are verified.

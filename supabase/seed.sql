@@ -1,0 +1,5 @@
+-- VisitFlow local seed file.
+--
+-- Keep this file free of production credentials and personal information.
+-- Deterministic development seed data will be introduced with the relevant
+-- feature milestone after the core tenant schema is stable.

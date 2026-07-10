@@ -149,10 +149,29 @@ This file records decisions that affect long-term product or technical direction
 
 **Consequences:** Preview pages can establish route structure without weakening future token security. Observability must use safe request identifiers rather than raw route references.
 
+## ADR-017 — Supabase development is migration-first and locally verified
+
+**Status:** Accepted
+
+**Context:** Database structure, grants, functions, and RLS policies are security-critical and must remain reproducible across local, CI, staging, and production environments.
+
+**Decision:** Version every database change as an immutable Supabase migration. Use the local Supabase stack through Docker, rebuild from a clean database in CI, run database linting, and execute pgTAP tests before merge. The initial CI baseline uses `supabase/setup-cli@v3` with Supabase CLI `2.84.2`.
+
+**Consequences:** Backend changes can be reproduced and reviewed without depending on a manually edited hosted project. Docker is required for local database development. CLI upgrades require a focused compatibility review.
+
+## ADR-018 — Organization creation uses a controlled transactional function
+
+**Status:** Accepted
+
+**Context:** Creating an organization also requires an active owner membership and an audit event. Allowing direct client inserts could leave partial or inconsistent tenant records.
+
+**Decision:** Revoke direct organization and membership inserts from authenticated clients. Create the organization, owner membership, and audit event through the security-definer `public.create_organization` function in one database transaction. The function validates the authenticated user, normalized name, slug, and timezone.
+
+**Consequences:** Onboarding has one controlled backend boundary and cannot leave an organization without an owner. Future membership changes should use similarly constrained operations instead of broad table permissions.
+
 ## Decisions still required
 
-- Drift versus another local database
-- Supabase local-development workflow
+- Drift versus another local database for Flutter offline storage
 - Whether verified native platform folders should be committed
 - Visitor web hosting and server-action pattern
 - Push notification implementation details
