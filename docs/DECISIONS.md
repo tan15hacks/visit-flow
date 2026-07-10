@@ -169,6 +169,16 @@ This file records decisions that affect long-term product or technical direction
 
 **Consequences:** Onboarding has one controlled backend boundary and cannot leave an organization without an owner. Future membership changes should use similarly constrained operations instead of broad table permissions.
 
+## ADR-019 — Flutter authentication uses a gateway and session controller
+
+**Status:** Accepted
+
+**Context:** Supabase Authentication is the selected identity provider, but UI, routing, and tests should not depend directly on SDK-specific response objects or live network calls.
+
+**Decision:** Wrap the official Supabase Auth client behind a feature-level `AuthGateway`. Maintain the active staff identity in one `AuthSessionController`, expose it through Riverpod, and use that controller as GoRouter's refresh source for authentication redirects. Keep backend-free preview mode explicit and separate from authenticated sessions.
+
+**Consequences:** Authentication behavior is testable with a fake gateway, restored sessions and sign-out drive navigation consistently, and future identity-provider changes remain contained. Client-side route guards improve UX but never replace PostgreSQL RLS or backend authorization.
+
 ## Decisions still required
 
 - Drift versus another local database for Flutter offline storage

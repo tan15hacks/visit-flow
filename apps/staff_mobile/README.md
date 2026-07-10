@@ -8,10 +8,11 @@ Flutter application for organization owners, administrators, guards, receptionis
 - Dart included with the Flutter SDK
 - Android Studio or the Android SDK for Android development
 - Xcode on macOS for iOS development
+- Docker Desktop and Supabase CLI for local authentication testing
 
 ## First-time setup
 
-The repository keeps generated Android and iOS scaffolding out of this first foundation branch so it can be produced by the exact installed Flutter SDK.
+The repository generates Android and iOS scaffolding using the installed Flutter SDK.
 
 From the repository root on Windows:
 
@@ -33,17 +34,56 @@ flutter run
 
 ## Preview mode
 
-The app runs without a backend and displays a preview-mode banner.
+Running without Supabase Dart defines keeps the existing preview shell available. Preview mode does not show real authentication or tenant data.
 
-## Supabase configuration
+```bash
+flutter run
+```
 
-Provide public client configuration with Dart defines. Never use a Supabase service-role or secret key in this application.
+## Supabase authentication
+
+VisitFlow accepts only the public Supabase URL and public publishable key. Never use a service-role key, database password, or server secret in the Flutter application.
+
+For a hosted project:
 
 ```bash
 flutter run \
   --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
   --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_PUBLISHABLE_KEY
 ```
+
+For local Supabase development, start the stack from the repository root:
+
+```bash
+supabase start
+supabase db reset
+supabase status
+```
+
+When testing on a physical Android phone, the phone cannot reach the PC through `127.0.0.1`. Keep the phone and PC on the same network and replace the localhost portion of the local API URL with the PC's LAN IPv4 address.
+
+Example:
+
+```powershell
+flutter run `
+  --dart-define=SUPABASE_URL=http://192.168.1.10:54321 `
+  --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_LOCAL_PUBLIC_KEY
+```
+
+The public key is shown by `supabase status`. Local email confirmation is currently disabled for development, so a successful local sign-up can create an active session immediately.
+
+## Authentication behavior
+
+When Supabase is configured:
+
+- signed-out users are sent to the sign-in screen;
+- staff can create an account with email and password;
+- existing sessions are restored by the official Supabase client;
+- authenticated users can enter the protected `/app/*` routes;
+- signing out returns the user to sign-in;
+- passwords are never stored or logged by VisitFlow.
+
+Organization creation, membership selection, and role-aware data access are intentionally deferred to the next milestone.
 
 ## Verification
 
@@ -56,15 +96,19 @@ flutter build apk --debug
 
 ## Current scope
 
-This milestone includes only:
+This milestone includes:
 
-- application bootstrap;
-- optional Supabase initialization;
+- application bootstrap and optional Supabase initialization;
 - Riverpod root scope;
 - centralized GoRouter configuration;
 - Material 3 theme;
 - responsive phone and tablet shell;
-- foundation screens;
-- smoke testing and CI.
+- Supabase password sign-in and sign-up;
+- authentication-state listening and session restoration;
+- protected application routes;
+- sign-out;
+- preview-mode compatibility;
+- controller, router, and widget tests;
+- Android debug build verification.
 
-Authentication, tenant data, visitor workflows, camera access, QR verification, and offline synchronization are intentionally not implemented yet.
+Tenant onboarding, visitor workflows, camera access, QR verification, notifications, reporting, and offline synchronization remain intentionally deferred.
