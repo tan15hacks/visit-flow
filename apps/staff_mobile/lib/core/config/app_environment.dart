@@ -17,6 +17,5 @@ final class AppEnvironment {
   final String supabasePublishableKey;
 
   bool get hasSupabaseConfiguration =>
-      supabaseUrl.trim().isNotEmpty &&
-      supabasePublishableKey.trim().isNotEmpty;
+      supabaseUrl.trim().isNotEmpty && supabasePublishableKey.trim().isNotEmpty;
 }
