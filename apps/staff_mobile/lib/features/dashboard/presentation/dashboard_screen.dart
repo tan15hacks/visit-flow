@@ -16,10 +16,7 @@ final class DashboardScreen extends StatelessWidget {
         icon: const Icon(Icons.person_add_alt_1_rounded),
         label: const Text('Register visitor'),
       ),
-      children: const [
-        _MetricGrid(),
-        _FoundationNotice(),
-      ],
+      children: const [_MetricGrid(), _FoundationNotice()],
     );
   }
 }
