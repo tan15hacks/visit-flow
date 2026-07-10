@@ -10,15 +10,15 @@ Milestone 2A — Supabase tenant foundation
 
 ## Pull request
 
-Pending — database foundation pull request will be opened after the first CI run is available.
+Pull request #4 — `feat: establish Supabase tenant foundation`
 
 ## Base
 
 `main` after merged visitor web foundation pull request #3.
 
-## Latest implementation commit
+## Latest verified database commit
 
-`e00e68e13f83328b0035bc5ebbf1806635515bab`
+`377d1993cff4b360592b81f65dd2778f7abec7e3`
 
 ## Completed
 
@@ -44,14 +44,15 @@ Pending — database foundation pull request will be opened after the first CI r
 - Supabase CI workflow added
 - Supabase local-development and migration rules documented
 - Supabase and transactional-onboarding architecture decisions recorded
+- Local Supabase stack started successfully in GitHub Actions
+- Database rebuilt successfully from a clean migration state
+- Database lint completed successfully
+- All pgTAP tenant-isolation tests passed
 
 ## In progress
 
-- Starting the local Supabase stack in GitHub Actions
-- Rebuilding the database from a clean state
-- Database lint verification
-- pgTAP tenant-isolation verification
-- Pull request creation and automatic merge after successful checks
+- Final head-level Supabase verification after documentation update
+- Automatic squash merge of pull request #4
 
 ## Security boundaries
 
@@ -88,12 +89,12 @@ Pending — database foundation pull request will be opened after the first CI r
 
 ## Verification state
 
-Verification is pending GitHub Actions.
+GitHub Actions run `29071873228` completed successfully for database commit `377d1993cff4b360592b81f65dd2778f7abec7e3`.
 
-Required checks:
+Verified steps:
 
 1. Supabase CLI 2.84.2 setup
-2. Local Supabase stack startup
+2. Local Supabase Docker stack startup
 3. Clean database reset from migrations
 4. Database lint at warning level
 5. pgTAP database tests
@@ -101,10 +102,11 @@ Required checks:
 7. Employee least privilege
 8. Suspended-membership access revocation
 9. Transactional organization-owner-audit creation
+10. Clean local stack shutdown
 
 ## Next recommended task
 
-After this milestone passes CI and is merged:
+After this milestone is merged:
 
 1. Create the Flutter authentication foundation branch.
 2. Add sign-in, sign-up, session restoration, and sign-out using Supabase Auth.
@@ -118,6 +120,6 @@ At the beginning of the next session:
 
 1. Read `docs/VISION.md`.
 2. Read `docs/ARCHITECTURE.md`, `docs/DATABASE_SCHEMA.md`, `docs/SECURITY.md`, `docs/API.md`, and this file.
-3. Confirm the active branch, pull request, and latest Supabase workflow result.
-4. Inspect exact migration or pgTAP failures before changing SQL.
-5. Do not start Flutter authentication until the tenant foundation is verified and merged.
+3. Confirm the active branch, pull request, and latest workflow result.
+4. Do not edit the verified initial migration after merge; create a new migration for every future schema or policy change.
+5. Do not implement organization onboarding UI until Flutter authentication and session guards are verified.
