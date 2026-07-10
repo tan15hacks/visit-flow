@@ -1,22 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visitflow_staff/core/widgets/foundation_page.dart';
+import 'package:visitflow_staff/features/organizations/domain/organization_membership.dart';
+import 'package:visitflow_staff/features/organizations/presentation/organization_providers.dart';
 
-final class DashboardScreen extends StatelessWidget {
+final class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final organizationController = ref.read(
+      organizationAccessControllerProvider,
+    );
+    return ListenableBuilder(
+      listenable: organizationController,
+      builder: (context, child) {
+        final membership = organizationController.selectedMembership;
+        return FoundationPage(
+          title: 'Dashboard',
+          description: membership == null
+              ? 'A focused operational view for receptionists, guards, and organization administrators.'
+              : 'Operational overview for ${membership.organization.name}.',
+          primaryAction: FilledButton.icon(
+            onPressed: null,
+            icon: const Icon(Icons.person_add_alt_1_rounded),
+            label: const Text('Register visitor'),
+          ),
+          children: [
+            if (membership != null)
+              _OrganizationContextCard(membership: membership),
+            const _MetricGrid(),
+            const _FoundationNotice(),
+          ],
+        );
+      },
+    );
+  }
+}
+
+final class _OrganizationContextCard extends StatelessWidget {
+  const _OrganizationContextCard({required this.membership});
+
+  final OrganizationMembership membership;
+
+  @override
   Widget build(BuildContext context) {
-    return FoundationPage(
-      title: 'Dashboard',
-      description:
-          'A focused operational view for receptionists, guards, and '
-          'organization administrators.',
-      primaryAction: FilledButton.icon(
-        onPressed: null,
-        icon: const Icon(Icons.person_add_alt_1_rounded),
-        label: const Text('Register visitor'),
+    final colorScheme = Theme.of(context).colorScheme;
+    final roleLabel = membership.role
+        .split('_')
+        .map(
+          (part) => part.isEmpty
+              ? part
+              : '${part.substring(0, 1).toUpperCase()}${part.substring(1)}',
+        )
+        .join(' ');
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.apartment_rounded,
+                color: colorScheme.onPrimaryContainer,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    membership.organization.name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$roleLabel · ${membership.organization.timezone}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    membership.organization.slug,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      children: const [_MetricGrid(), _FoundationNotice()],
     );
   }
 }
@@ -147,15 +234,12 @@ final class _FoundationNotice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Flutter foundation ready for verification',
+                    'Organization workspace ready',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   SizedBox(height: 6),
                   Text(
-                    'Authentication and real visitor data are intentionally '
-                    'not part of this milestone. The shell, routing, theme, '
-                    'configuration, and test foundation are being validated '
-                    'first.',
+                    'Authentication and secure organization onboarding are now connected. Visitor records, locations, employees, and QR operations remain intentionally disabled until their focused milestones.',
                   ),
                 ],
               ),
